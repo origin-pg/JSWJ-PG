@@ -20,7 +20,7 @@ cc.Class({
     },
 
     start () {
-        // 子弹轨迹
+        // 子弹轨迹dfsf 
         var mob=cc.moveBy(this.bullet_speed,this.end_x,this.end_y);
         var call_func=cc.callFunc(function(){
             this.node.destroy();
