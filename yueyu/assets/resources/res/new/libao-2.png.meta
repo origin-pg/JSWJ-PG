@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "10641aa8-6b27-4d57-9e9e-eee6f01cf26a",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "libao-2": {
+      "ver": "1.0.3",
+      "uuid": "35b395c9-85ed-4889-a4f3-d18bea4608db",
+      "rawTextureUuid": "10641aa8-6b27-4d57-9e9e-eee6f01cf26a",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -3,
+      "offsetY": 0,
+      "trimX": 5,
+      "trimY": 0,
+      "width": 132,
+      "height": 140,
+      "rawWidth": 148,
+      "rawHeight": 140,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
