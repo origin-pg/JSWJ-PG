@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="left-down" width="120" height="67" tilewidth="32" tileheight="32" infinite="0" nextobjectid="9">
+ <tileset firstgid="1" source="wall.tsx"/>
+ <layer name="layer1" width="120" height="67">
+  <data encoding="base64" compression="zlib">
+   eJzt2bENwyAARUFWY4XsP0wGCIosuYHHnfRLV88FxnOMMS09mvRt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/RtO7XvZzF+3dh39Wz1HdFX3x3p+8ypfd/Qt03fNn2p0LdN3zZ92/Rdq5y99F3Tt03f/b35xtV3f7fcYfyjb5u+beW+6Ft3c98b/iPpq2+Vvm36tunL6fRt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/Rtm5bfF6G4ix0=
+  </data>
+ </layer>
+ <objectgroup color="#ffff00" name="walls">
+  <object id="2" name="wall" x="1920" y="768" width="224" height="192"/>
+  <object id="3" name="wall" x="1440" y="736" width="160" height="128"/>
+  <object id="6" name="wall" x="1728" y="1184" width="192" height="128"/>
+  <object id="7" name="wall" x="2208" y="1088" width="160" height="128"/>
+  <object id="8" name="wall" x="1984" y="1376" width="224" height="160"/>
+ </objectgroup>
+</map>
