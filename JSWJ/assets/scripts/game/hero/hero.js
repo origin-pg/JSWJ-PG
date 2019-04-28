@@ -25,6 +25,9 @@ cc.Class({
         this.hero=this.node;
         this.tiledmap=cc.find("Canvas/tiledmap");
 
+        //获取刚体避免update多次索引
+        this.body = this.getComponent(cc.RigidBody);
+
         this.win_size = cc.winSize;
         this.win_size_xMin = -(this.win_size.width/2);
         this.win_size_xMax = (this.win_size.width/2);
@@ -54,6 +57,8 @@ cc.Class({
     },
     FIXED_update(dt){
         if(this.rocker.dir===-1){
+            //刚体通过线速度移动，不考虑惯性
+            this.body.linearVelocity = cc.v2(0,0);;
             return;// 如果摇杆dir为-1 说明摇杆没有触摸
         }
         this.tiledmap_Rect = this.tiledmap.getBoundingBox();// 地图区域
@@ -92,18 +97,20 @@ cc.Class({
         this.s_y=this.s*Math.sin(this.rocker.radius);// y轴移动量
 
         // 英雄正向移动
-        // this.node.x+=this.s_x;
-        // this.node.y+=this.s_y;
+        //this.node.x+=this.s_x;
+        //this.node.y+=this.s_y;
         // 地图反方向移动
         // this.tiledmap.x-=this.s_x;
         // this.tiledmap.y-=this.s_y;
-
+        var vector = cc.v2(this.s_x*50,this.s_y*50);
+        this.body.linearVelocity = vector;
         // this.map_move=cc.v2( this.tiledmap.x , this.tiledmap.y );// 地图移动量
         // console.log(this.map_move);
         this.hero_dtPoint=this.hero.position;// 人物偏移中心量(的位置)
         // this.hero_ToCenter_len=this.hero_dtPoint.mag();// 返回该向量的长度
-
         /* 自己的方法 */
+
+        /*
         if (this.s_x<0) {// 左移
             if (this.tiledmap_Rect.xMin >= this.win_size_xMin ) {
                 this.node.x+=this.s_x;
@@ -148,5 +155,6 @@ cc.Class({
                 this.node.y+=this.s_y;
             }
         }
+        */
     },
 });
