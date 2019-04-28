@@ -32,6 +32,18 @@ cc.Class({
             wall.width=walls[i].width;
             wall.height=walls[i].height;
             wall.setPosition(walls[i].offset.x-1920,walls[i].offset.y-1072);
+            var boxCollider = wall.getComponent(cc.PhysicsBoxCollider);
+            //设置偏移量
+            boxCollider.offset.x = wall.width *0.5;
+            boxCollider.offset.y = wall.height *-0.5;
+            //设置包围盒范围
+            boxCollider.size.width = wall.width;
+            boxCollider.size.height = wall.height;
+            //重新init一下物理collider
+            boxCollider.apply(); 
+            
+           
+            
         }
     },
 

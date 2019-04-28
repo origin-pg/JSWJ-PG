@@ -17,24 +17,27 @@ cc.Class({
 
     // *-*-*-*-*-*-*-*-* onLoad() *-*-*-*-*-*-*-*-*
     onLoad () {
+        // FIXED_UPDATE
         this.NOW_FIXED_TIME=0;// 当前过去时间为0
         this.FIXED_TIME=0.03;// 固定每隔0.03s调用一次fixed_update函数
 
         // 变量初始化
         this.hero=this.node;
         this.tiledmap=cc.find("Canvas/tiledmap");
-        this.tiledmap_x=this.tiledmap.x;
-        this.tiledmap_y=this.tiledmap.y;
-        this.tiledmap_width=this.tiledmap.width;
-        this.tiledmap_height=this.tiledmap.height;
 
-        this.win_size = cc.director.getWinSize();
+        //获取刚体避免update多次索引
+        this.body = this.getComponent(cc.RigidBody);
+
+        this.win_size = cc.winSize;
+        this.win_size_xMin = -(this.win_size.width/2);
+        this.win_size_xMax = (this.win_size.width/2);
+        this.win_size_yMin = -(this.win_size.height/2);
+        this.win_size_yMax = (this.win_size.height/2);
     },
     
     // *-*-*-*-*-*-*-* start()  *-*-*-*-*-*-*-*-*-*
     start () {
         console.log(this.tiledmap.getBoundingBox());
-        // console.log(this.node.getBoundingBox());
     },
 
     // *-*-*-*-*-*-*-* update(dt) *-*-*-*-*-*-*-*-*
@@ -54,32 +57,16 @@ cc.Class({
     },
     FIXED_update(dt){
         if(this.rocker.dir===-1){
+            //刚体通过线速度移动，不考虑惯性
+            this.body.linearVelocity = cc.v2(0,0);;
             return;// 如果摇杆dir为-1 说明摇杆没有触摸
         }
-
-        /**
-         * @description 地图反方向运动
-         */
-        this.s=this.hero_speed*dt;// 路程分解
-        this.s_x=this.s*Math.cos(this.rocker.radius);
-        this.s_y=this.s*Math.sin(this.rocker.radius);
-
-        // 更新英雄的位置
-        // this.camera.position=this.hero.position;
-        // this.node.x+=this.s_x;
-        // this.node.y+=this.s_y;
-        // 地图反方向移动
-        this.tiledmap.x-=this.s_x;
-        this.tiledmap.y-=this.s_y;
-        // 更新英雄的角度
-        // this.hero_rot = 180 * this.rocker.radius / Math.PI;//转换为角度值
-        // this.node.rotation = 90 - this.hero_rot;
-
+        this.tiledmap_Rect = this.tiledmap.getBoundingBox();// 地图区域
+        this.hero_Rect = this.hero.getBoundingBox();// 人物区域
+        {
         /** 
          * @description 限制人物不出范围(地图)
         */
-        this.tiledmap_Rect = this.tiledmap.getBoundingBox();// 地图区域
-        this.hero_Rect = this.hero.getBoundingBox();// 人物区域
         if (this.hero_Rect.xMin < this.tiledmap_Rect.xMin)
 		{
 			this.hero.x = this.tiledmap_Rect.xMin + this.hero_Rect.width / 2;
@@ -96,37 +83,78 @@ cc.Class({
 		{
 			this.hero.y = this.tiledmap_Rect.yMax - this.hero_Rect.height / 2;;
         }
+        }
 
+        // 更新英雄的角度
+        // this.hero_rot = 180 * this.rocker.radius / Math.PI;//转换为角度值
+        // this.node.rotation = 90 - this.hero_rot;
+
+        /**
+         * @description 移动
+         */
+        this.s=this.hero_speed*dt;// 路程分解
+        this.s_x=this.s*Math.cos(this.rocker.radius);// x轴移动量
+        this.s_y=this.s*Math.sin(this.rocker.radius);// y轴移动量
+
+        // 英雄正向移动
+        //this.node.x+=this.s_x;
+        //this.node.y+=this.s_y;
+        // 地图反方向移动
+        // this.tiledmap.x-=this.s_x;
+        // this.tiledmap.y-=this.s_y;
+        var vector = cc.v2(this.s_x*50,this.s_y*50);
+        this.body.linearVelocity = vector;
         // this.map_move=cc.v2( this.tiledmap.x , this.tiledmap.y );// 地图移动量
         // console.log(this.map_move);
-        
-        /** 
-         * @description 人物回到中心点
+        this.hero_dtPoint=this.hero.position;// 人物偏移中心量(的位置)
+        // this.hero_ToCenter_len=this.hero_dtPoint.mag();// 返回该向量的长度
+        /* 自己的方法 */
+
+        /*
+        if (this.s_x<0) {// 左移
+            if (this.tiledmap_Rect.xMin >= this.win_size_xMin ) {
+                this.node.x+=this.s_x;
+            }
+            else if(this.hero_dtPoint.x<0){
+                this.tiledmap.x-=this.s_x;
+            }
+            else {
+                this.node.x+=this.s_x;
+            }
+        }
+        else{// 右移
+            if (this.tiledmap_Rect.xMax < this.win_size_xMax){
+                this.node.x+=this.s_x;
+            }
+            else if(this.hero_dtPoint.x>0){
+                this.tiledmap.x-=this.s_x;
+            }
+            else{
+                this.node.x+=this.s_x;
+            }
+        }
+        if (this.s_y<0) {// 下移
+            if (this.tiledmap_Rect.yMin >= this.win_size_yMin ) {
+                this.node.y+=this.s_y;
+            }
+            else if(this.hero_dtPoint.y<0){
+                this.tiledmap.y-=this.s_y;
+            }
+            else {
+                this.node.y+=this.s_y;
+            }
+        }
+        else{// 上移
+            if (this.tiledmap_Rect.yMax < this.win_size_yMax){
+                this.node.y+=this.s_y;
+            }
+            else if(this.hero_dtPoint.y>0){
+                this.tiledmap.y-=this.s_y;
+            }
+            else{
+                this.node.y+=this.s_y;
+            }
+        }
         */
-        this.hero_dtPoint=this.hero.position;// 人物偏移量
-        this.isToCenter=this.hero_dtPoint.mag();// 返回该向量的长度
-        if (!this.isToCenter) {
-            // 人物没有偏离中心时 地图反方向移动
-            
-        }
-        else{
-            // 人物偏离中心时
-            console.log("xxxxxx");
-            if (this.s_x<0) {// 说明左移
-                console.log("zuo");
-                
-            }
-            else{// 右移
-                console.log("you");
-            }
-            if (this.s_y<0) {// 说明下移
-                console.log("xia");
-            }
-            else{// 上移
-                console.log("shang");
-            }
-        }
-
-
     },
 });
