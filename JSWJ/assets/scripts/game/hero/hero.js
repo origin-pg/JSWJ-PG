@@ -12,6 +12,12 @@ cc.Class({
             default: null,
         },
 
+        // -> 主摄像机 <-
+        mainCamera: {
+            default: null,
+            type: cc.Node
+        },
+
         hero_speed:300,// 英雄速度
     },
 
@@ -29,15 +35,13 @@ cc.Class({
         this.body = this.getComponent(cc.RigidBody);
 
         this.win_size = cc.winSize;
-        this.win_size_xMin = -(this.win_size.width/2);
         this.win_size_xMax = (this.win_size.width/2);
-        this.win_size_yMin = -(this.win_size.height/2);
         this.win_size_yMax = (this.win_size.height/2);
     },
     
     // *-*-*-*-*-*-*-* start()  *-*-*-*-*-*-*-*-*-*
     start () {
-        console.log(this.tiledmap.getBoundingBox());
+        // console.log(this.tiledmap.getBoundingBox());
     },
 
     // *-*-*-*-*-*-*-* update(dt) *-*-*-*-*-*-*-*-*
@@ -63,10 +67,11 @@ cc.Class({
         }
         this.tiledmap_Rect = this.tiledmap.getBoundingBox();// 地图区域
         this.hero_Rect = this.hero.getBoundingBox();// 人物区域
-        {
+
         /** 
          * @description 限制人物不出范围(地图)
         */
+        {
         if (this.hero_Rect.xMin < this.tiledmap_Rect.xMin)
 		{
 			this.hero.x = this.tiledmap_Rect.xMin + this.hero_Rect.width / 2;
@@ -102,59 +107,69 @@ cc.Class({
         // 地图反方向移动
         // this.tiledmap.x-=this.s_x;
         // this.tiledmap.y-=this.s_y;
+        
+        // -> 主摄像机跟随主角移动 <-
+        // this.mainCamera.x = this.node.x;
+        // this.mainCamera.y = this.node.y;
+
+        // 刚体线性移动
         var vector = cc.v2(this.s_x*50,this.s_y*50);
         this.body.linearVelocity = vector;
+
         // this.map_move=cc.v2( this.tiledmap.x , this.tiledmap.y );// 地图移动量
-        // console.log(this.map_move);
         this.hero_dtPoint=this.hero.position;// 人物偏移中心量(的位置)
         // this.hero_ToCenter_len=this.hero_dtPoint.mag();// 返回该向量的长度
-        /* 自己的方法 */
-
-        /*
+        
+        /** 
+         * @description 边界滚屏(自己的方法)
+        */
         if (this.s_x<0) {// 左移
-            if (this.tiledmap_Rect.xMin >= this.win_size_xMin ) {
+            if (this.tiledmap_Rect.xMin + this.win_size_xMax >= this.node.x) {
                 this.node.x+=this.s_x;
             }
-            else if(this.hero_dtPoint.x<0){
-                this.tiledmap.x-=this.s_x;
+            else if(this.node.x >= this.tiledmap_Rect.xMax - this.win_size_xMax){
+                this.node.x+=this.s_x;
             }
             else {
                 this.node.x+=this.s_x;
+                this.mainCamera.x = this.node.x;
             }
         }
         else{// 右移
-            if (this.tiledmap_Rect.xMax < this.win_size_xMax){
+            if (this.tiledmap_Rect.xMax - this.win_size_xMax <= this.node.x){
                 this.node.x+=this.s_x;
             }
-            else if(this.hero_dtPoint.x>0){
-                this.tiledmap.x-=this.s_x;
+            else if(this.node.x <= this.tiledmap_Rect.xMin + this.win_size_xMax){
+                this.node.x+=this.s_x;
             }
             else{
                 this.node.x+=this.s_x;
+                this.mainCamera.x = this.node.x;
             }
         }
         if (this.s_y<0) {// 下移
-            if (this.tiledmap_Rect.yMin >= this.win_size_yMin ) {
+            if (this.tiledmap_Rect.yMin + this.win_size_yMax >= this.node.y) {
                 this.node.y+=this.s_y;
             }
-            else if(this.hero_dtPoint.y<0){
-                this.tiledmap.y-=this.s_y;
+            else if(this.node.y >= this.tiledmap_Rect.yMax - this.win_size_yMax){
+                this.node.y+=this.s_y;
             }
             else {
                 this.node.y+=this.s_y;
+                this.mainCamera.y = this.node.y;
             }
         }
         else{// 上移
-            if (this.tiledmap_Rect.yMax < this.win_size_yMax){
+            if (this.tiledmap_Rect.yMax - this.win_size_yMax <= this.node.y){
                 this.node.y+=this.s_y;
             }
-            else if(this.hero_dtPoint.y>0){
-                this.tiledmap.y-=this.s_y;
+            else if(this.node.y <= this.tiledmap_Rect.yMin + this.win_size_yMax){
+                this.node.y+=this.s_y;
             }
             else{
                 this.node.y+=this.s_y;
-            }
+                this.mainCamera.y = this.node.y;
+            }        
         }
-        */
     },
 });

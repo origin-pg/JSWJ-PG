@@ -1,0 +1,23 @@
+{
+  "__type__": "cc.TiledMapAsset",
+  "_name": "map1",
+  "_objFlags": 0,
+  "_native": "",
+  "tmxXmlStr": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<map version=\"1.0\" tiledversion=\"1.1.5\" orientation=\"orthogonal\" renderorder=\"left-down\" width=\"120\" height=\"67\" tilewidth=\"32\" tileheight=\"32\" infinite=\"0\" nextobjectid=\"9\">\n <tileset firstgid=\"1\" source=\"wall.tsx\"/>\n <layer name=\"layer1\" width=\"120\" height=\"67\">\n  <data encoding=\"base64\" compression=\"zlib\">\n   eJzt2bENwyAARUFWY4XsP0wGCIosuYHHnfRLV88FxnOMMS09mvRt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/RtO7XvZzF+3dh39Wz1HdFX3x3p+8ypfd/Qt03fNn2p0LdN3zZ92/Rdq5y99F3Tt03f/b35xtV3f7fcYfyjb5u+beW+6Ft3c98b/iPpq2+Vvm36tunL6fRt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/Rt07dN3zZ92/Rtm5bfF6G4ix0=\n  </data>\n </layer>\n <objectgroup color=\"#ffff00\" name=\"walls\">\n  <object id=\"2\" name=\"wall\" x=\"1920\" y=\"768\" width=\"224\" height=\"192\"/>\n  <object id=\"3\" name=\"wall\" x=\"1440\" y=\"736\" width=\"160\" height=\"128\"/>\n  <object id=\"6\" name=\"wall\" x=\"1728\" y=\"1184\" width=\"192\" height=\"128\"/>\n  <object id=\"7\" name=\"wall\" x=\"2208\" y=\"1088\" width=\"160\" height=\"128\"/>\n  <object id=\"8\" name=\"wall\" x=\"1984\" y=\"1376\" width=\"224\" height=\"160\"/>\n </objectgroup>\n</map>\n",
+  "textures": [
+    {
+      "__uuid__": "e21d6e65-314e-4ed8-be67-51d5cc7233fb"
+    }
+  ],
+  "textureNames": [
+    "box.png"
+  ],
+  "tsxFiles": [
+    {
+      "__uuid__": "ffd359d9-76c6-4255-8d1e-efb45bed006a"
+    }
+  ],
+  "tsxFileNames": [
+    "wall.tsx"
+  ]
+}

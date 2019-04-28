@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "thumbstick",
+    "texture": "a20b9a2e-ae7f-447f-a680-4d3b9b359af6",
+    "atlas": "",
+    "rect": [
+      16,
+      20,
+      106,
+      112
+    ],
+    "offset": [
+      0.5,
+      -7.5
+    ],
+    "originalSize": [
+      137,
+      137
+    ],
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}
